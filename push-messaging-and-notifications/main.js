@@ -48,7 +48,7 @@ function sendSubscriptionToServer(subscription) {
   // endpointWorkaround(subscription)
   console.log('TODO: Implement sendSubscriptionToServer()');
 
-  curlCommandDiv = JSON.stringify(subscription);
+  curlCommandDiv.textContent = JSON.stringify(subscription);
   return;
 
   var mergedEndpoint = endpointWorkaround(subscription);

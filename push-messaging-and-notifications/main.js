@@ -13,7 +13,7 @@ function base64ToArrayBuffer(base64) {
   return bytes.buffer;
 }
 
-var VAPID_PUBLICKEY = base64ToArrayBuffer("MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERRXFIWQec3SqCTnou7oPtNsNAJQYQdhFiOMcjguER4Whlys/JrRRnL460vtwvKdN665nrhIRcVSZwxqgh38WZQ==")
+var VAPID_PUBLICKEY = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERRXFIWQec3SqCTnou7oPtNsNAJQYQdhFiOMcjguER4Whlys/JrRRnL460vtwvKdN665nrhIRcVSZwxqgh38WZQ=="
 
 var curlCommandDiv = document.querySelector('.js-curl-command');
 var isPushEnabled = false;

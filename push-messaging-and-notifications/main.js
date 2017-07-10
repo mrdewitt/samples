@@ -3,6 +3,18 @@
 var API_KEY = "AIzaSyCTemV4DFBZ-zJ3X1NkbvQTcVvomiiR8m0"
 var GCM_ENDPOINT = 'https://android.googleapis.com/gcm/send';
 
+function base64ToArrayBuffer(base64) {
+  var binary_string = window.atob(base64);
+  var len = binary_string.length;
+  var bytes = new Uint8Array(len);
+  for (var i = 0; i < len; i++) {
+    bytes[i] = binary_string.charCodeAt(i);
+  }
+  return bytes.buffer;
+}
+
+var VAPID_PUBLICKEY = base64ToArrayBuffer("MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERRXFIWQec3SqCTnou7oPtNsNAJQYQdhFiOMcjguER4Whlys/JrRRnL460vtwvKdN665nrhIRcVSZwxqgh38WZQ==")
+
 var curlCommandDiv = document.querySelector('.js-curl-command');
 var isPushEnabled = false;
 
@@ -35,6 +47,9 @@ function sendSubscriptionToServer(subscription) {
   // For compatibly of Chrome 43, get the endpoint via
   // endpointWorkaround(subscription)
   console.log('TODO: Implement sendSubscriptionToServer()');
+
+  curlCommandDiv = JSON.stringify(subscription);
+  return;
 
   var mergedEndpoint = endpointWorkaround(subscription);
 
@@ -116,7 +131,7 @@ function subscribe() {
   pushButton.disabled = true;
 
   navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-    serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
+    serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: VAPID_PUBLICKEY})
       .then(function(subscription) {
         // The subscription was successful
         isPushEnabled = true;

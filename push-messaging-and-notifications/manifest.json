@@ -6,6 +6,5 @@
         "sizes": "192x192"
       }],
   "start_url": "./index.html?homescreen=1",
-  "display": "standalone",
-  "gcm_sender_id": "267014334936"
+  "display": "standalone"
 }

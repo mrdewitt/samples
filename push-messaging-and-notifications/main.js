@@ -10,10 +10,10 @@ function base64ToArrayBuffer(base64) {
   for (var i = 0; i < len; i++) {
     bytes[i] = binary_string.charCodeAt(i);
   }
-  return bytes.buffer;
+  return bytes;
 }
 
-var VAPID_PUBLICKEY = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERRXFIWQec3SqCTnou7oPtNsNAJQYQdhFiOMcjguER4Whlys/JrRRnL460vtwvKdN665nrhIRcVSZwxqgh38WZQ=="
+var VAPID_PUBLICKEY = base64ToArrayBuffer("BG3OGHrl3YJ5PHpl0GSqtAAlUPnx1LvwQvFMIc68vhJU6nIkRzPEqtCduQz8wQj0r71NVPzr7ZRk2f+fhsQ5pK8")
 
 var curlCommandDiv = document.querySelector('.js-curl-command');
 var isPushEnabled = false;
@@ -47,8 +47,10 @@ function sendSubscriptionToServer(subscription) {
   // For compatibly of Chrome 43, get the endpoint via
   // endpointWorkaround(subscription)
   console.log('TODO: Implement sendSubscriptionToServer()');
+  new QRCode(curlCommandDiv, (JSON.stringify(subscription, null, 2)));
+  return;
 
-  curlCommandDiv.textContent = JSON.stringify(subscription);
+  curlCommandDiv.textContent = JSON.stringify(subscription, null, 2);
   return;
 
   var mergedEndpoint = endpointWorkaround(subscription);

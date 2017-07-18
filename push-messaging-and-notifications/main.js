@@ -18,67 +18,9 @@ var VAPID_PUBLICKEY = base64ToArrayBuffer("BG3OGHrl3YJ5PHpl0GSqtAAlUPnx1LvwQvFMI
 var curlCommandDiv = document.querySelector('.js-curl-command');
 var isPushEnabled = false;
 
-// This method handles the removal of subscriptionId
-// in Chrome 44 by concatenating the subscription Id
-// to the subscription endpoint
-function endpointWorkaround(pushSubscription) {
-  // Make sure we only mess with GCM
-  if (pushSubscription.endpoint.indexOf('https://android.googleapis.com/gcm/send') !== 0) {
-    return pushSubscription.endpoint;
-  }
-
-  var mergedEndpoint = pushSubscription.endpoint;
-  // Chrome 42 + 43 will not have the subscriptionId attached
-  // to the endpoint.
-  if (pushSubscription.subscriptionId &&
-    pushSubscription.endpoint.indexOf(pushSubscription.subscriptionId) === -1) {
-    // Handle version 42 where you have separate subId and Endpoint
-    mergedEndpoint = pushSubscription.endpoint + '/' +
-      pushSubscription.subscriptionId;
-  }
-  return mergedEndpoint;
-}
-
 function sendSubscriptionToServer(subscription) {
-  // TODO: Send the subscription.endpoint
-  // to your server and save it to send a
-  // push message at a later date
-  //
-  // For compatibly of Chrome 43, get the endpoint via
-  // endpointWorkaround(subscription)
-  console.log('TODO: Implement sendSubscriptionToServer()');
   new QRCode(curlCommandDiv, (JSON.stringify(subscription, null, 2)));
   return;
-
-  curlCommandDiv.textContent = JSON.stringify(subscription, null, 2);
-  return;
-
-  var mergedEndpoint = endpointWorkaround(subscription);
-
-  // This is just for demo purposes / an easy to test by
-  // generating the appropriate cURL command
-  showCurlCommand(mergedEndpoint);
-}
-
-// NOTE: This code is only suitable for GCM endpoints,
-// When another browser has a working version, alter
-// this to send a PUSH request directly to the endpoint
-function showCurlCommand(mergedEndpoint) {
-  // The curl command to trigger a push message straight from GCM
-  if (mergedEndpoint.indexOf(GCM_ENDPOINT) !== 0) {
-    window.Demo.debug.log('This browser isn\'t currently ' +
-      'supported for this demo');
-    return;
-  }
-
-  var endpointSections = mergedEndpoint.split('/');
-  var subscriptionId = endpointSections[endpointSections.length - 1];
-
-  var curlCommand = 'curl --header "Authorization: key=' + API_KEY +
-    '" --header Content-Type:"application/json" ' + GCM_ENDPOINT +
-    ' -d "{\\"registration_ids\\":[\\"' + subscriptionId + '\\"]}"';
-
-  curlCommandDiv.textContent = curlCommand;
 }
 
 function unsubscribe() {
